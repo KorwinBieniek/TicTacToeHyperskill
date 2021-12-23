@@ -89,12 +89,32 @@ def count_signs(board):
                 o_count += 1
     return (x_count, o_count)
 
+def enter_coordinates(board):
+    while True:
+        print('Enter the coordinates: ', end='')
+        try:
+            x, y = list(map(int, input().split()))
+            if board[x - 1][y - 1] != '_':
+                print('This cell is occupied! Choose another one!')
+            else:
+                board[x - 1][y - 1] = 'X'
+                break
+        except ValueError:
+            print('You should enter numbers!')
+        except IndexError:
+            print('Coordinates should be from 1 to 3!')
 
+
+
+
+print('Enter cells: ', end='')
 cells = input()
 board = create_board(cells)
-x_o = count_signs(board)
+# x_o = count_signs(board)
 print_board(board)
-if (x_o[0] - x_o[1]) == 2 or (x_o[1] - x_o[0]) == 2 or is_win(board, 'X') and is_win(board, 'O'):
+enter_coordinates(board)
+print_board(board)
+'''if (x_o[0] - x_o[1]) == 2 or (x_o[1] - x_o[0]) == 2 or is_win(board, 'X') and is_win(board, 'O'):
     print('Impossible')
 elif is_win(board, 'X'):
     print('X wins')
@@ -103,4 +123,4 @@ elif is_win(board, 'O'):
 elif is_draw(board):
     print('Draw')
 else:
-    print('Game not finished')
+    print('Game not finished')'''
