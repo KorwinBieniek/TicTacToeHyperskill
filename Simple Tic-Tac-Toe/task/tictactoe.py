@@ -8,15 +8,13 @@ def print_board(board):
     print('---------')
 
 
-def create_board(cells):
+def create_board():
     rows = []
-    n = 0
     for i in range(3):
         row = []
         for j in range(3):
-            row.append(cells[j + n])
+            row.append(' ')
         rows.append(row)
-        n += 3
     return rows
 
 
@@ -74,9 +72,10 @@ def is_win(board, player):
 def is_draw(board):
     for row in board:
         for place in row:
-            if place == '_':
+            if place == ' ':
                 return False
     return True
+
 
 def count_signs(board):
     x_count = 0
@@ -89,15 +88,16 @@ def count_signs(board):
                 o_count += 1
     return (x_count, o_count)
 
-def enter_coordinates(board):
+
+def enter_coordinates(board, player):
     while True:
         print('Enter the coordinates: ', end='')
         try:
             x, y = list(map(int, input().split()))
-            if board[x - 1][y - 1] != '_':
+            if board[x - 1][y - 1] != ' ':
                 print('This cell is occupied! Choose another one!')
             else:
-                board[x - 1][y - 1] = 'X'
+                board[x - 1][y - 1] = player
                 break
         except ValueError:
             print('You should enter numbers!')
@@ -105,22 +105,35 @@ def enter_coordinates(board):
             print('Coordinates should be from 1 to 3!')
 
 
+def check_state(board):
+    if is_win(board, 'X'):
+        print('X wins')
+        return True
+    elif is_win(board, 'O'):
+        print('O wins')
+        return True
+    elif is_draw(board):
+        print('Draw')
+        return True
+    return False
+
+def swap_player(player):
+    if player == 'X':
+        return 'O'
+    return 'X'
 
 
-print('Enter cells: ', end='')
-cells = input()
-board = create_board(cells)
-# x_o = count_signs(board)
-print_board(board)
-enter_coordinates(board)
-print_board(board)
-'''if (x_o[0] - x_o[1]) == 2 or (x_o[1] - x_o[0]) == 2 or is_win(board, 'X') and is_win(board, 'O'):
-    print('Impossible')
-elif is_win(board, 'X'):
-    print('X wins')
-elif is_win(board, 'O'):
-    print('O wins')
-elif is_draw(board):
-    print('Draw')
-else:
-    print('Game not finished')'''
+def start():
+    board = create_board()
+    player = 'X'
+    print_board(board)
+    while True:
+        enter_coordinates(board, player)
+        print_board(board)
+        player = swap_player(player)
+        if check_state(board):
+            break
+
+
+if __name__ == '__main__':
+    start()
